@@ -1,4 +1,4 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 import { ICommonNews } from '../interfaces/common-news.interface';
 
@@ -42,7 +42,18 @@ export class CommonNewsDto implements ICommonNews {
   @Expose()
   created_at_i: number;
 
-  @Expose()
+  @Expose({
+    name: '_tags'
+  })
+  @Transform(({ value }) => {
+    if (!value) {
+      return '';
+    }
+    if (Array.isArray(value)){
+      return value.join()
+    }
+    return '-'
+  })
   tags: string;
 
   @Expose()

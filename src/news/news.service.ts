@@ -4,22 +4,33 @@ import { plainToClass } from 'class-transformer';
 
 import { CommonNewsDto } from "src/common/dtos/common-news.dto";
 import { ICommonNews } from "src/common/interfaces/common-news.interface";
-import { ERROR_FETCHING_FROM_API } from '../common/errors'
-import { NewsRepository } from "./news-respository";
+import { ERROR_FETCHING_FROM_API, ERROR_INSERTING_NEWS } from '../common/errors'
+import { NewsPgRepository } from "./news-respository";
 
 
 @Injectable()
 export class NewsService {
   private url = 'https://hn.algolia.com/api/v1/search_by_date?query=nodejs';
 
-  constructor(private readonly newsRepository: NewsRepository) {}
+  constructor(private readonly NewsPgRepository: NewsPgRepository) {}
 
-  async insertNews(news: CommonNewsDto): Promise<void> {
-    this.newsRepository.storeNew(news);
+  private async insertNews(news: CommonNewsDto): Promise<void> {
+
+
+    try {
+      this.NewsPgRepository.storeNew(news);
+    } catch (error) {
+      throw new Error(ERROR_INSERTING_NEWS);
+    }
+  }
+
+  async getAllNews(){
+    return await this.NewsPgRepository.findAll()
   }
 
   async processNews(): Promise<void> {
-    const news = await this.fetchFromHackerNews();
+    const newsList = await this.fetchFromHackerNews();
+    newsList.map((item: CommonNewsDto) => this.insertNews(item));
 
   }
 
@@ -29,7 +40,8 @@ export class NewsService {
         headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
       });
 
-      return data.hits.map((item: ICommonNews) => {
+      return data.hits.map((item) => {
+        
         return plainToClass(CommonNewsDto, item, {
           excludeExtraneousValues: true,
           enableImplicitConversion: true,

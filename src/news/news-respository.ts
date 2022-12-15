@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 
 import { News } from './news.entity';
 @Injectable()
-export class NewsRepository {
+export class NewsPgRepository {
   constructor(
     @InjectRepository(News)
     private readonly repo: Repository<News>,
@@ -20,8 +20,12 @@ export class NewsRepository {
 
     // create if not exist
     if (!existingNew) {
-      this.repo.create(news);
+      this.repo.save(news);
     }
   }
-  
+
+  async findAll() {
+
+    return await this.repo.find()
+  }
 }

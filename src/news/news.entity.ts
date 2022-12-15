@@ -10,43 +10,82 @@ export class News implements ICommonNews {
   @Column()
   created_at: Date;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   title: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   url: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   author: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   points: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   story_text: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   comment_text: string;
 
-  @Column()
+  @Column({
+    default: 0,
+    nullable: true,
+  })
   num_comments: number;
 
-  @Column()
+  @Column({
+    default: 0,
+    nullable: true,
+  })
   story_id: number;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   story_title: string;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   story_url: string;
 
-  @Column()
+  @Column({
+    default: 0,
+    nullable: true,
+  })
   parent_id: number;
 
-  @Column()
+  @Column({
+    default: 0,
+    nullable: true,
+  })
   created_at_i: number;
 
-  @Column()
+  @Column({
+    default: '',
+    nullable: true,
+  })
   tags: string;
 
   @Column()
