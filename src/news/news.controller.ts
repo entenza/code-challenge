@@ -1,19 +1,37 @@
-import { Controller, Get, HttpStatus, Put, Res } from '@nestjs/common';
+import { Controller, Delete, Get, HttpStatus, Param, Put, Query, Res } from '@nestjs/common';
 import {
   ERROR_FETCHING_FROM_API,
   ERROR_INSERTING_NEWS,
 } from 'src/common/errors';
+import { GetNewsRequest } from 'src/common/request/getNews.request';
+
+
 import { NewsService } from './news.service';
+import { validMonths } from '../common/validMonths';
 
 @Controller('news')
 export class NewsController {
   constructor(private readonly newsService: NewsService) {}
+
   @Get()
-  async getNews() {
-    return {
-      success: true,
-      message: 'News succesfully processed',
-    };
+  async getNews(@Query() query: GetNewsRequest, @Res() response) {
+    const { month } = query;
+    // console.log("month ", month);
+
+    if (month) {
+      if (!validMonths.includes(month)) {
+        return response.status(HttpStatus.BAD_REQUEST).send({
+          error: true,
+          message: `the month specified ('${month}') is not a valid month name ... ${JSON.stringify(
+            validMonths,
+          )}`,
+        });
+      }
+    }
+
+    return response
+      .status(HttpStatus.OK)
+      .send(await this.newsService.getAllNews(query));
   }
 
   @Get('process')
@@ -39,21 +57,9 @@ export class NewsController {
     return {};
   }
 
-  @Put()
-  async updateNews() {}
-
-  @Get('fetch')
-  async fetchFromHackerNews(@Res() response) {
-    try {
-      const result = await this.newsService.fetchFromHackerNews();
-      response.send(result);
-    } catch (error) {
-      console.log('====================================================');
-      console.log(error);
-      console.log('====================================================');
-      return response.status(HttpStatus.BAD_REQUEST).send({
-        error: ERROR_FETCHING_FROM_API,
-      });
-    }
+  @Delete('remove/:objectId')
+  async deleteNews(@Param('objectId') id: number) {
+    return id;
   }
 }
+

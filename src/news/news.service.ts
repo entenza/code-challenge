@@ -4,6 +4,7 @@ import { plainToClass } from 'class-transformer';
 
 import { CommonNewsDto } from "src/common/dtos/common-news.dto";
 import { ICommonNews } from "src/common/interfaces/common-news.interface";
+import { GetNewsRequest } from "src/common/request/getNews.request";
 import { ERROR_FETCHING_FROM_API, ERROR_INSERTING_NEWS } from '../common/errors'
 import { NewsPgRepository } from "./news-respository";
 
@@ -15,8 +16,6 @@ export class NewsService {
   constructor(private readonly NewsPgRepository: NewsPgRepository) {}
 
   private async insertNews(news: CommonNewsDto): Promise<void> {
-
-
     try {
       this.NewsPgRepository.storeNew(news);
     } catch (error) {
@@ -24,14 +23,27 @@ export class NewsService {
     }
   }
 
-  async getAllNews(){
-    return await this.NewsPgRepository.findAll()
+  async getAllNews(query: GetNewsRequest) {
+    const list = await this.NewsPgRepository.findAll(query);
+
+    return list.map((item) => {
+      // don't what to deleted field... 
+      delete item.deleted
+      /**
+       * This is only to format the data of the tags..
+       * they are received as an array, but stored as string splitted by comas
+       * then we have to make it an array as well so it might looks the same...
+       */
+      return {
+        ...item,
+        tags: item.tags.split(','),
+      };
+    });
   }
 
   async processNews(): Promise<void> {
     const newsList = await this.fetchFromHackerNews();
     newsList.map((item: CommonNewsDto) => this.insertNews(item));
-
   }
 
   async fetchFromHackerNews(): Promise<CommonNewsDto[]> {
@@ -41,7 +53,6 @@ export class NewsService {
       });
 
       return data.hits.map((item) => {
-        
         return plainToClass(CommonNewsDto, item, {
           excludeExtraneousValues: true,
           enableImplicitConversion: true,

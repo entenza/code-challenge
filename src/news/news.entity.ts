@@ -7,7 +7,10 @@ export class News implements ICommonNews {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({
+    nullable: false,
+    default: new Date()
+  })
   created_at: Date;
 
   @Column({
@@ -90,4 +93,7 @@ export class News implements ICommonNews {
 
   @Column()
   objectID: string;
+
+  @Column({ nullable: true})
+  deleted: Date;
 }

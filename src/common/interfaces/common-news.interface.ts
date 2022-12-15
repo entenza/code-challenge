@@ -14,5 +14,7 @@ export interface ICommonNews {
   created_at_i: number;
   tags: string;
   objectID: string;
+
+  deleted? : Date;
   
 }

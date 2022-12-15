@@ -43,19 +43,21 @@ export class CommonNewsDto implements ICommonNews {
   created_at_i: number;
 
   @Expose({
-    name: '_tags'
+    name: '_tags',
   })
   @Transform(({ value }) => {
     if (!value) {
       return '';
     }
-    if (Array.isArray(value)){
-      return value.join()
+    if (Array.isArray(value)) {
+      return value.join();
     }
-    return '-'
+    return '-';
   })
   tags: string;
 
   @Expose()
   objectID: string;
+
+  
 }
