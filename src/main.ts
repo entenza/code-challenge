@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000, () => console.log("NestApp is running"));
+  const port = 3000;
+  await app.listen(port, () => console.log(`CodeChallengeApp is running on PORT ${port}`));
 }
 bootstrap();

@@ -10,11 +10,11 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('root')
+  @Get('bad_request')
   async getStatus(@Res() response): Promise<string> {
     return response.status(HttpStatus.BAD_REQUEST).send({
       error: true,
     });
-    // return await this.appService.getStatus('s');
+
   }
 }
