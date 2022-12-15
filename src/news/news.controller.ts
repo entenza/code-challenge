@@ -1,10 +1,17 @@
-import { Controller, Delete, Get, HttpStatus, Param, Put, Query, Res } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Query,
+  Res,
+} from '@nestjs/common';
 import {
   ERROR_FETCHING_FROM_API,
   ERROR_INSERTING_NEWS,
 } from 'src/common/errors';
 import { GetNewsRequest } from 'src/common/request/getNews.request';
-
 
 import { NewsService } from './news.service';
 import { validMonths } from '../common/validMonths';
@@ -62,4 +69,3 @@ export class NewsController {
     return id;
   }
 }
-

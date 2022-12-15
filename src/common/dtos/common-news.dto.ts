@@ -58,6 +58,4 @@ export class CommonNewsDto implements ICommonNews {
 
   @Expose()
   objectID: string;
-
-  
 }

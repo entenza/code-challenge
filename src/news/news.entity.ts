@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 import { ICommonNews } from '../common/interfaces/common-news.interface';
 
@@ -9,7 +9,7 @@ export class News implements ICommonNews {
 
   @Column({
     nullable: false,
-    default: new Date()
+    default: new Date(),
   })
   created_at: Date;
 
@@ -94,6 +94,6 @@ export class News implements ICommonNews {
   @Column()
   objectID: string;
 
-  @Column({ nullable: true})
+  @Column({ nullable: true })
   deleted: Date;
 }

@@ -1,9 +1,9 @@
-import { Module } from "@nestjs/common";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { NewsPgRepository } from "./news-respository";
-import { NewsController } from "./news.controller";
-import { News } from "./news.entity";
-import { NewsService } from "./news.service";
+import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { NewsPgRepository } from './news-pg-respository';
+import { NewsController } from './news.controller';
+import { News } from './news.entity';
+import { NewsService } from './news.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([News])],
@@ -12,4 +12,3 @@ import { NewsService } from "./news.service";
   exports: [],
 })
 export class NewsModule {}
-

@@ -1,4 +1,4 @@
- export const validMonths = [
+export const validMonths = [
   'january',
   'february',
   'march',
@@ -13,7 +13,7 @@
   'december',
 ];
 
- export const numberOfMonth = {
+export const numberOfMonth = {
   january: 1,
   february: 2,
   march: 3,

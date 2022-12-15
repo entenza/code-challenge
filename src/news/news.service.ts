@@ -1,13 +1,14 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { plainToClass } from 'class-transformer';
 
-import { CommonNewsDto } from "src/common/dtos/common-news.dto";
-import { ICommonNews } from "src/common/interfaces/common-news.interface";
-import { GetNewsRequest } from "src/common/request/getNews.request";
-import { ERROR_FETCHING_FROM_API, ERROR_INSERTING_NEWS } from '../common/errors'
-import { NewsPgRepository } from "./news-respository";
-
+import { CommonNewsDto } from 'src/common/dtos/common-news.dto';
+import { GetNewsRequest } from 'src/common/request/getNews.request';
+import {
+  ERROR_FETCHING_FROM_API,
+  ERROR_INSERTING_NEWS,
+} from '../common/errors';
+import { NewsPgRepository } from './news-pg-respository';
 
 @Injectable()
 export class NewsService {
@@ -27,8 +28,8 @@ export class NewsService {
     const list = await this.NewsPgRepository.findAll(query);
 
     return list.map((item) => {
-      // don't what to deleted field... 
-      delete item.deleted
+      // don't what to deleted field...
+      delete item.deleted;
       /**
        * This is only to format the data of the tags..
        * they are received as an array, but stored as string splitted by comas
@@ -48,7 +49,7 @@ export class NewsService {
 
   async fetchFromHackerNews(): Promise<CommonNewsDto[]> {
     try {
-      const { data, status } = await axios.get(this.url, {
+      const { data } = await axios.get(this.url, {
         headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
       });
 

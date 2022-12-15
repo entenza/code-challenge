@@ -15,6 +15,5 @@ export interface ICommonNews {
   tags: string;
   objectID: string;
 
-  deleted? : Date;
-  
+  deleted?: Date;
 }

@@ -15,6 +15,5 @@ export class AppController {
     return response.status(HttpStatus.BAD_REQUEST).send({
       error: true,
     });
-
   }
 }

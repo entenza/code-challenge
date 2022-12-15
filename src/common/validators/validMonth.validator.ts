@@ -1,9 +1,4 @@
-import {
-  registerDecorator,
-  ValidationOptions,
-} from 'class-validator';
-
-
+import { registerDecorator, ValidationOptions } from 'class-validator';
 
 export function IsValidMonth(validationOptions?: ValidationOptions) {
   return function (object: any, propertyName: string) {
@@ -20,23 +15,23 @@ export function IsValidMonth(validationOptions?: ValidationOptions) {
           }
 
           value = value.toString().trim();
-					console.log('====================================================')
-					console.log('esto dentro del validador ', value)
-					console.log('====================================================')
-					const validMonths = [
-						'january',
-						'february',
-						'march',
-						'april',
-						'may',
-						'june',
-						'july',
-						'august',
-						'september',
-						'October',
-						'november',
-						'december',
-					];
+          console.log('====================================================');
+          console.log('esto dentro del validador ', value);
+          console.log('====================================================');
+          const validMonths = [
+            'january',
+            'february',
+            'march',
+            'april',
+            'may',
+            'june',
+            'july',
+            'august',
+            'september',
+            'October',
+            'november',
+            'december',
+          ];
 
           if (!validMonths.includes(value)) {
             this.error = `This '${value}' is not a valid month ... [${validMonths}]`;

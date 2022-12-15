@@ -1,12 +1,10 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import * as dotenv from 'dotenv';
 
 import { AppService } from './app.service';
-import { StatusModule } from './status/status.module';
 import { NewsModule } from './news/news.module';
 
 const config = dotenv.config().parsed;
@@ -30,10 +28,8 @@ const config = dotenv.config().parsed;
     //   mongoURI,
     // ),
 
-
     ScheduleModule.forRoot(),
 
-    StatusModule,
     NewsModule,
   ],
   controllers: [AppController],
