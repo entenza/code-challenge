@@ -5,7 +5,6 @@ import { plainToClass } from 'class-transformer';
 
 import { CommonNewsDto } from 'src/common/dtos/common-news.dto';
 import { GetNewsRequest } from 'src/common/request/getNews.request';
-import { TreeRepository } from 'typeorm';
 import {
   ERROR_FETCHING_FROM_API,
   ERROR_INSERTING_NEWS,

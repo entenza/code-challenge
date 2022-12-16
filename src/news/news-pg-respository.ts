@@ -46,21 +46,18 @@ export class NewsPgRepository {
     return await qb.getMany();
   }
 
-
-  async remove(objectID: string): Promise<boolean>{
+  async remove(objectID: string): Promise<boolean> {
     const existingNew = await this.repo.findOne({
       where: {
         objectID,
       },
     });
 
-    if (!existingNew){
+    if (!existingNew) {
       throw new NotFoundException(ERROR_NEW_NOT_EXIST);
     }
 
     this.repo.remove(existingNew);
-    return true
+    return true;
   }
-
-
 }
