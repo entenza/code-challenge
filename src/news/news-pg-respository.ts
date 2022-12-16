@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommonNewsDto } from 'src/common/dtos/common-news.dto';
+import { ERROR_NEW_NOT_EXIST } from 'src/common/errors';
 import { GetNewsRequest } from 'src/common/request/getNews.request';
 import { Repository } from 'typeorm';
 import { numberOfMonth } from '../common/validMonths';
@@ -43,10 +44,23 @@ export class NewsPgRepository {
     }
 
     return await qb.getMany();
-
-    // return await this.repo.find({
-    //   where,
-    //   take: 5,
-    // });
   }
+
+
+  async remove(objectID: string): Promise<boolean>{
+    const existingNew = await this.repo.findOne({
+      where: {
+        objectID,
+      },
+    });
+
+    if (!existingNew){
+      throw new NotFoundException(ERROR_NEW_NOT_EXIST);
+    }
+
+    this.repo.remove(existingNew);
+    return true
+  }
+
+
 }

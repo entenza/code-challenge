@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
 import axios from 'axios';
 import { plainToClass } from 'class-transformer';
 
 import { CommonNewsDto } from 'src/common/dtos/common-news.dto';
 import { GetNewsRequest } from 'src/common/request/getNews.request';
+import { TreeRepository } from 'typeorm';
 import {
   ERROR_FETCHING_FROM_API,
   ERROR_INSERTING_NEWS,
@@ -14,40 +16,17 @@ import { NewsPgRepository } from './news-pg-respository';
 export class NewsService {
   private url = 'https://hn.algolia.com/api/v1/search_by_date?query=nodejs';
 
-  constructor(private readonly NewsPgRepository: NewsPgRepository) {}
+  constructor(private readonly newsRepository: NewsPgRepository) {}
 
   private async insertNews(news: CommonNewsDto): Promise<void> {
     try {
-      this.NewsPgRepository.storeNew(news);
+      this.newsRepository.storeNew(news);
     } catch (error) {
       throw new Error(ERROR_INSERTING_NEWS);
     }
   }
 
-  async getAllNews(query: GetNewsRequest) {
-    const list = await this.NewsPgRepository.findAll(query);
-
-    return list.map((item) => {
-      // don't what to deleted field...
-      delete item.deleted;
-      /**
-       * This is only to format the data of the tags..
-       * they are received as an array, but stored as string splitted by comas
-       * then we have to make it an array as well so it might looks the same...
-       */
-      return {
-        ...item,
-        tags: item.tags.split(','),
-      };
-    });
-  }
-
-  async processNews(): Promise<void> {
-    const newsList = await this.fetchFromHackerNews();
-    newsList.map((item: CommonNewsDto) => this.insertNews(item));
-  }
-
-  async fetchFromHackerNews(): Promise<CommonNewsDto[]> {
+  private async fetchFromHackerNews(): Promise<CommonNewsDto[]> {
     try {
       const { data } = await axios.get(this.url, {
         headers: { 'Accept-Encoding': 'gzip,deflate,compress' },
@@ -66,5 +45,34 @@ export class NewsService {
 
       throw new Error(ERROR_FETCHING_FROM_API);
     }
+  }
+
+  async getAllNews(query: GetNewsRequest) {
+    const list = await this.newsRepository.findAll(query);
+
+    return list.map((item) => {
+      // don't what to deleted field...
+      delete item.deleted;
+      /**
+       * This is only to format the data of the tags..
+       * they are received as an array, but stored as string splitted by comas
+       * then we have to make it an array as well so it might looks the same...
+       */
+      return {
+        ...item,
+        tags: item.tags.split(','),
+      };
+    });
+  }
+
+  // @Cron('*/10 * * * * *')
+  @Cron(CronExpression.EVERY_HOUR)
+  async processNews(): Promise<void> {
+    const newsList = await this.fetchFromHackerNews();
+    newsList.map((item: CommonNewsDto) => this.insertNews(item));
+  }
+
+  async removeNews(objectID: string) {
+    return await this.newsRepository.remove(objectID.trim());
   }
 }

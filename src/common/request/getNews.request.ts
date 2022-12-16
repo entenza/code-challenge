@@ -3,18 +3,26 @@ import { IsOptional } from 'class-validator';
 
 export class GetNewsRequest {
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   author: string;
 
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   tag: string;
 
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   title: string;
 
   @IsOptional()
-  @ApiProperty()
+  @ApiProperty({
+    required: false,
+  })
   month: string;
 }

@@ -1,6 +1,8 @@
 import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AppService } from './app.service';
 
+@ApiTags('Hello World')
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
@@ -10,10 +12,4 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('bad_request')
-  async getStatus(@Res() response): Promise<string> {
-    return response.status(HttpStatus.BAD_REQUEST).send({
-      error: true,
-    });
-  }
 }
