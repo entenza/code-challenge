@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsOptional } from 'class-validator';
+import { IGetNewsRequest } from '../interfaces/get-news.request.interface';
 
-export class GetNewsRequest {
+export class GetNewsRequest implements IGetNewsRequest {
   @IsOptional()
   @ApiProperty({
     required: false,
@@ -25,4 +26,16 @@ export class GetNewsRequest {
     required: false,
   })
   month: string;
+
+  @IsOptional()
+  @ApiProperty({
+    required: false,
+  })
+  page: number;
+
+  @IsOptional()
+  @ApiProperty({
+    required: false,
+  })
+  limit: number;
 }

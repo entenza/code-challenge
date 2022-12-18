@@ -29,6 +29,12 @@ export class NewsPgRepository {
 
   async findAll(query: GetNewsRequest) {
     const { author, tag, title, month } = query;
+    const take = query.limit || 5
+    let skip = 0
+    if (query.page > 0)
+       skip = (query.page - 1) * take;
+
+
     let qb = this.repo.createQueryBuilder().where('deleted is null');
 
     if (author) qb = qb.andWhere('author = :author', { author });
@@ -43,6 +49,8 @@ export class NewsPgRepository {
       });
     }
 
+    qb = qb.take(take)
+    qb = qb.skip(skip)
     return await qb.getMany();
   }
 
