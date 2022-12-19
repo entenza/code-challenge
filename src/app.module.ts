@@ -1,11 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
+
 import * as dotenv from 'dotenv';
 
+import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { NewsModule } from './news/news.module';
+
+
 
 const config = dotenv.config().parsed;
 // const mongoURI = `mongodb://${config.MONGO_DB_USER}:${config.MONGO_DB_PASS}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB_NAME}`;
@@ -35,4 +38,8 @@ const config = dotenv.config().parsed;
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(){
+    
+  }
+}

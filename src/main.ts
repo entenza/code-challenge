@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { checkDB } from './db.config';
+
+
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  
+  await checkDB()
   const app = await NestFactory.create(AppModule);
   const port = 3000;
 
@@ -16,9 +21,11 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/docs', app, document);
-
-  await app.listen(port, () =>
+  app.listen(port, () =>
     console.log(`CodeChallengeApp is running on PORT ${port}`),
   );
+  
+  
+  
 }
 bootstrap();
