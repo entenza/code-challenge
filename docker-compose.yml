@@ -26,18 +26,18 @@ services:
     # volumes:
     #   - ./data_db:/var/lib/postgresql/data
 
-  # app:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   restart: unless-stopped
-  #   ports:
-  #     - 3000:3000
-  #   volumes:
-  #     - type: bind
-  #       source: ./src
-  #       target: /app/src
-  #   depends_on:
-  #     - postgres
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    volumes:
+      - type: bind
+        source: ./src
+        target: /app/src
+    depends_on:
+      - postgres
 
   
