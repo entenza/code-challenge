@@ -29,6 +29,8 @@ const buildOptions = () : DataSourceOptions => {
     //   migrationsDir: 'dist/src/db/migrations',
     // },
   };
+
+
 }
 
 export const checkDB = async () => {
@@ -41,7 +43,7 @@ export const checkDB = async () => {
       options,
     });
   } catch (error) {
-    throw new Error("Error, there writing OrmConfigJson!   " + error)
+    throw new Error(error)
     
   }
 

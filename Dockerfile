@@ -2,12 +2,12 @@ FROM node:14.17.0-alpine
 
 RUN mkdir /app
 WORKDIR /app
-COPY package*.json yarn.lock ./
+COPY package*.json ./
 RUN npm install yarn
-RUN yarn install
+# RUN yarn install
 
 COPY . .
 
 EXPOSE 3000
 
-ENTRYPOINT ["yarn", "start:dev"]
+ENTRYPOINT ["npm", "run", "start:dev"]
